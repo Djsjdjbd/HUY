@@ -1,1 +1,11 @@
-bash -c "$(curl -L https://raw.githubusercontent.com/Thaomtam/sing-box/main/singbox.sh)"
+snap install core; snap refresh core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
+
+certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
+
+cp /etc/letsencrypt/archive/*/fullchain*.pem /etc/ssl/private/fullchain.cer
+cp /etc/letsencrypt/archive/*/privkey*.pem /etc/ssl/private/private.key
+
+chown -R nobody:nogroup /etc/ssl/private
+chmod -R 0644 /etc/ssl/private/*
